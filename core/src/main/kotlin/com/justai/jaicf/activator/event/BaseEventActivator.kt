@@ -30,7 +30,7 @@ open class BaseEventActivator(model: ScenarioModel) : StateMapActivator(
         request: BotRequest
     ): Activation? {
         val state = findState(request.input, botContext)
-        return Activation(state, EventActivatorContext(request.input))
+        return Activation(state, EventActivatorContext(request.input), botContext.dialogContext.currentState)
     }
 
     companion object : ActivatorFactory {

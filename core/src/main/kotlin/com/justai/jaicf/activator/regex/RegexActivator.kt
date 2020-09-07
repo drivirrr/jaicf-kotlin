@@ -28,7 +28,7 @@ class RegexActivator(model: ScenarioModel) : Activator {
     private val transitions = model.activations
         .filter { a -> a.type == ActivationRuleType.regexp }
         .map { a -> Pair(a.fromState, Pair(Pattern.compile(a.rule), a.toState)) }
-        .groupBy {a -> a.first}
+        .groupBy { a -> a.first }
         .mapValues { l -> l.value.map { v -> v.second } }
 
     override fun activate(
@@ -36,16 +36,17 @@ class RegexActivator(model: ScenarioModel) : Activator {
         request: BotRequest
     ): Activation? {
         val path = StatePath.parse(botContext.dialogContext.currentContext)
-        return checkWithParents(path, request.input)
+        return checkWithParents(path, request.input, botContext.dialogContext.currentState)
     }
 
     private fun checkWithParents(
         path: StatePath,
-        query: String
+        query: String,
+        currentState: String
     ): Activation? {
         var p = path
         while (true) {
-            val res = check(p.toString(), query)
+            val res = check(p.toString(), query, currentState)
             if (res != null) {
                 return res
             }
@@ -59,7 +60,8 @@ class RegexActivator(model: ScenarioModel) : Activator {
 
     private fun check(
         path: String,
-        query: String
+        query: String,
+        currentState: String
     ): Activation? {
         val rules = transitions[path]
         rules?.forEach { r ->
@@ -70,7 +72,7 @@ class RegexActivator(model: ScenarioModel) : Activator {
             if (m.matches()) {
                 val context = RegexActivatorContext(r.first)
                 storeVariables(context, m)
-                return Activation(r.second, context)
+                return Activation(r.second, context, currentState)
             }
         }
         return null
