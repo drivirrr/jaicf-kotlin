@@ -120,6 +120,7 @@ class BotEngine(
 
             }
             conversationLoggers.forEach { it.doLogInternal(loggingContext) }
+            botContext.cleanTempData()
         }
     }
 
