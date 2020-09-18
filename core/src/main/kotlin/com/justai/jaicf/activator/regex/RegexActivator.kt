@@ -32,25 +32,6 @@ class RegexActivator(model: ScenarioModel) : BaseActivator(model) {
                 null
             }
         }
-        return null
-    }
-
-    private fun check(
-        path: String,
-        query: String,
-        currentState: String
-    ): Activation? {
-        val rules = transitions[path]
-        rules?.forEach { r ->
-            val m = r.first.matcher(query)
-            if (m.matches()) {
-                val context = RegexActivatorContext(r.first)
-                storeVariables(context, m)
-                return Activation(r.second, context)
-            }
-        }
-        return null
-    }
 
     private fun storeVariables(context: RegexActivatorContext, m: Matcher) {
         for (i in 0..m.groupCount()) {
