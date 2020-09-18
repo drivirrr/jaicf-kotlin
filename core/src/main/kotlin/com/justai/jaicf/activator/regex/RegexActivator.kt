@@ -69,7 +69,7 @@ class RegexActivator(model: ScenarioModel) : Activator {
             if (m.matches()) {
                 val context = RegexActivatorContext(r.first)
                 storeVariables(context, m)
-                return Activation(r.second, context, currentState)
+                return Activation(r.second, context)
             }
         }
         return null

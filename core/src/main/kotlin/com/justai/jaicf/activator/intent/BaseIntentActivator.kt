@@ -30,7 +30,7 @@ open class BaseIntentActivator(
         val context = recogniseIntent(botContext, request)
         return context?.let {
             val state = findState(it.intent, botContext)
-            Activation(state, it, botContext.dialogContext.currentState)
+            Activation(state, it)
         }
     }
 

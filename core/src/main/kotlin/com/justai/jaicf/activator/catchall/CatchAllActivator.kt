@@ -50,7 +50,7 @@ class CatchAllActivator(model: ScenarioModel) : Activator {
         val state = checkWithParents(path)
 
         return state?.let {
-            Activation(it, CatchAllActivatorContext(), botContext.dialogContext.currentState)
+            Activation(it, CatchAllActivatorContext())
         }
     }
 
